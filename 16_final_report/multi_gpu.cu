@@ -33,23 +33,19 @@ void errorcalc(float *A, float *B, float *C, int N){
     for (int j=0; j<N; j++)
       err += fabs(C[N*i+j]);
   printf("error: %lf\n",err/N/N);
-  for(int i=0;i<100;i++){
-    printf("%f,",C[i]);
-  }
-  printf("\n");
 }
 
 void errorcalc2(float *A, float *B, float *C, int N){
   #pragma omp parallel for
-  for (int i=0; i<1024; i++)
-    for (int k=0; k<2048; k++)
-      for (int j=0; j<1024; j++)
-        C[1024*i+j] -= A[2048*i+k] * B[1024*k+j];
+  for (int i=0; i<N/2; i++)
+    for (int k=0; k<N; k++)
+      for (int j=0; j<N/2; j++)
+        C[N/2*i+j] -= A[N*i+k] * B[N/2*k+j];
   double err = 0;
-  for (int i=0; i<1024; i++)
-    for (int j=0; j<1024; j++)
-      err += fabs(C[1024*i+j]);
-  printf("error: %lf\n",err/1024/1024);
+  for (int i=0; i<N/2; i++)
+    for (int j=0; j<N/2; j++)
+      err += fabs(C[N/2*i+j]);
+  printf("error: %lf\n",err/(N/2)/(N/2));
 }
 
 int main(int argc, char **argv) {
@@ -57,7 +53,7 @@ int main(int argc, char **argv) {
   int M = 128;
   int size = N*N*sizeof(float);
 
-  float A[2048*2048], B[2048*2048], C[2048*2048];
+  float A[N*N], B[N*N], C[N*N];
   for (int i=0; i<N; i++) {
     for (int j=0; j<N; j++) {
       A[N*i+j] = drand48();
