@@ -85,6 +85,7 @@ int main(int argc, char **argv) {
     }
   }
 
+  auto tic = chrono::steady_clock::now();
   cudaStream_t stream[4];
   for (int dev_id=0; dev_id<num_devs; dev_id++) {
     cudaSetDevice(dev_id);
@@ -97,7 +98,6 @@ int main(int argc, char **argv) {
 		cudaMemcpy(subC_d[dev_id],subC[dev_id],size/4,cudaMemcpyHostToDevice);
   }
 
-  auto tic = chrono::steady_clock::now();
   for (int dev_id = 0; dev_id < num_devs; dev_id++) {
     cudaSetDevice(dev_id);
     dim3 grid(N/2/M, N/2);
@@ -106,12 +106,12 @@ int main(int argc, char **argv) {
   for (int dev_id = 0; dev_id < num_devs; dev_id++) {
     cudaStreamSynchronize(stream[dev_id]);
   }
-  auto toc = chrono::steady_clock::now();
   
   for (int dev_id = 0; dev_id < num_devs; dev_id++) {
     cudaSetDevice(dev_id);
     cudaMemcpy(subC[dev_id],subC_d[dev_id],size/4,cudaMemcpyDeviceToHost);
   }
+  auto toc = chrono::steady_clock::now();
 
   for (int i=0; i<N/2; i++) {
     for (int j=0; j<N/2; j++) {
