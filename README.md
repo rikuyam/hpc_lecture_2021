@@ -1,3 +1,9 @@
+# 学籍番号:21M30821
+# 氏名:山上理久
+
+## final report
+16_final_report/multi_gpu.cu
+
 # hpc_lecture
 
 |          | Topic                                | Sample code               |
