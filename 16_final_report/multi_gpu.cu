@@ -111,7 +111,6 @@ int main(int argc, char **argv) {
     cudaSetDevice(dev_id);
     cudaMemcpy(subC[dev_id],subC_d[dev_id],size/4,cudaMemcpyDeviceToHost);
   }
-  auto toc = chrono::steady_clock::now();
 
   for (int i=0; i<N/2; i++) {
     for (int j=0; j<N/2; j++) {
@@ -121,6 +120,7 @@ int main(int argc, char **argv) {
       C[N*(i+N/2)+(j+N/2)] = subC[3][N/2*i+j];
     }
   }
+  auto toc = chrono::steady_clock::now();
   double time = chrono::duration<double>(toc - tic).count();
   printf("N=%d: %lf s (%lf GFlops)\n",N,time,2.*N*N*N/time/1e9);
 
