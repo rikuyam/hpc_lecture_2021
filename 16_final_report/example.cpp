@@ -3,6 +3,7 @@
 #include <cmath>
 #include <vector>
 #include <chrono>
+#include <stdlib.h>
 using namespace std;
 
 int main(int argc, char** argv) {
@@ -62,10 +63,7 @@ int main(int argc, char** argv) {
       err += fabs(C[N*i+j]);
   if(rank==0) {
     double time = comp_time+comm_time;
-    printf("N    : %d\n",N);
-    printf("comp : %lf s\n", comp_time);
-    printf("comm : %lf s\n", comm_time);
-    printf("total: %lf s (%lf GFlops)\n",time,2.*N*N*N/time/1e9);
+    printf("N=%d: %lf s (%lf GFlops)\n",N,time,2.*N*N*N/time/1e9);
     printf("error: %lf\n",err/N/N);
   }
   MPI_Finalize();
