@@ -33,6 +33,10 @@ void errorcalc(float *A, float *B, float *C, int N){
     for (int j=0; j<N; j++)
       err += fabs(C[N*i+j]);
   printf("error: %lf\n",err/N/N);
+  for(int i=0;i<100;i++){
+    printf("%f,",C[i]);
+  }
+  printf("\n");
 }
 
 void errorcalc2(float *A, float *B, float *C, int N){
